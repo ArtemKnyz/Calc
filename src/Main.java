@@ -4,27 +4,28 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
-        //System.out.println("test");
         Rule rule = new Rule();
         Parsing parsing = new Parsing();
 
-        String text = "2+4*16/2.5+3,5";
+        //String text = "2+4*16/2.5+3,5";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
             System.out.print("Введите одну из команд - (rule | start | exit): ");
-            String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1) {
+            String params = reader.readLine().trim().toLowerCase();
+            if (params.length() < 1) {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            switch (params[0]) {
+            switch (params) {
                 case "rule":
                     rule.ruleOfApplication();
                     break;
                 case "start":
-                    parsing.pars(text);
+                    String s = parsing.inputExpression();
+                    System.out.println("Вы ввели: " + s.toString());
+                    parsing.pars(s);
+
                     break;
                 case "exit":
                     return;
