@@ -1,13 +1,10 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         Rule rule = new Rule();
         Parsing parsing = new Parsing();
-
-        //String text = "2+4*16/2.5+3,5";
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
@@ -22,10 +19,12 @@ public class Main {
                     rule.ruleOfApplication();
                     break;
                 case "start":
-                    String s = parsing.inputExpression();
-                    System.out.println("Вы ввели: " + s);
-                    System.out.println(parsing.par(s));
-                    System.out.println(new Operation().calculate(parsing.par(s)));
+                    String inputExpression = parsing.inputExpression();
+                    if (new Checking().check(inputExpression) == false) {   //проверка валидатором
+                        System.out.println("");
+                        continue;
+                    }
+                    System.out.println(new Operation().calculate(parsing.parsingSourceExpression(inputExpression)));
                     break;
                 case "exit":
                     return;

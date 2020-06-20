@@ -1,7 +1,8 @@
+import Exceptions.InputErrorException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Parsing {
@@ -11,41 +12,34 @@ public class Parsing {
         return reader.readLine().trim().toLowerCase();
     }
 
-    String par(String sourceText) {
+    String parsingSourceExpression(String sourceExpression) throws InputErrorException {
         Stack<Character> sign = new Stack<>();
-        String ds = "";
-        int priority = 0;
-        for (int i = 0; i < sourceText.length(); i++) {
-            priority = getPriority(sourceText.charAt(i));
-            if (priority == 0) {
-                ds += sourceText.charAt(i);
+        String outExpression = "";
+        int priorityOfSign = 0;
+        for (int i = 0; i < sourceExpression.length(); i++) {
+            priorityOfSign = getPriorityOfSign(sourceExpression.charAt(i));
+
+            //check isDigit
+            if (priorityOfSign == 0) {
+                outExpression += sourceExpression.charAt(i);
             }
-            if (priority == 1) {
-                ds += " ";
-                while (!sign.empty()){
-                    if(getPriority(sign.peek())==2){
-                        ds+=sign.pop();
-                    } else break;
-                }
-                sign.push(sourceText.charAt(i));
-            }
-            if (priority == 2) {
-                ds += " ";
+            if (priorityOfSign > 0) {
+                outExpression += " ";
                 while (!sign.empty()) {
-                    if (getPriority(sign.peek()) == 2) {
-                        ds += sign.pop();
+                    if (getPriorityOfSign(sign.peek()) == 2) {
+                        outExpression += sign.pop();
                     } else break;
                 }
-                sign.push(sourceText.charAt(i));
+                sign.push(sourceExpression.charAt(i));
             }
         }
         while (!sign.empty()) {
-            ds += sign.pop();
+            outExpression += sign.pop();
         }
-        return ds;
+        return outExpression;
     }
 
-    public int getPriority(char ch) {
+    public int getPriorityOfSign(char ch) throws InputErrorException {
         if (ch == '+' || ch == '-') {
             return 1;
         }
