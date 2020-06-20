@@ -23,9 +23,9 @@ public class Main {
                     break;
                 case "start":
                     String s = parsing.inputExpression();
-                    System.out.println("Вы ввели: " + s.toString());
-                    parsing.pars(s);
-
+                    System.out.println("Вы ввели: " + s);
+                    System.out.println(parsing.par(s));
+                    System.out.println(new Operation().calculate(parsing.par(s)));
                     break;
                 case "exit":
                     return;

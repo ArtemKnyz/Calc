@@ -1,53 +1,44 @@
-import java.util.regex.Matcher;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 public class Operation {
-    static int res;
-    String sd = null;
-    static int promRes;
 
-    static int calculate(char[] chars) {
-        Pattern pattern = Pattern.compile("\\d+");
-        for (int i = 0; i < chars.length; i++) {
-            for (int j = 1; j < chars.length; j++) {
-
-
-                if (Pattern.matches("[0123456789]+", String.valueOf(chars[i]))) {
-                    promRes = chars[i];
+    static Double calculate(String chars) {
+        String st = "";
+        Stack<Double> sr = new Stack<>();
+        Parsing p = new Parsing();
+        for (int i = 0; i < chars.length(); i++) {
+            if (chars.charAt(i) == ' ') {
+                continue;
+            }
+            if (p.getPriority(chars.charAt(i)) == 0) {
+                while (chars.charAt(i) != ' ' && p.getPriority(chars.charAt(i)) == 0) {
+                    st += chars.charAt(i++);
+                    if (i == chars.length()) break;
                 }
-                if (Pattern.matches("[+/-/*/]+", String.valueOf(chars[j]))) {
-                    switch (chars[j]) {
-                        case '+':
-                            res = count1 + count2;
-                            break;
-                        case '-':
-                            res = count1 - count2;
-                            break;
-                        case '*':
-                            res = count1 * count2;
-                            break;
-                        case '/':
-                            res = count1 / count2;
-                            break;
+                sr.push(Double.parseDouble(st));
+                st = new String();
+            }
+            if (p.getPriority(chars.charAt(i)) > 0) {
+                double a = sr.pop(), b = sr.pop();
 
+                if (chars.charAt(i) == '+') {
+                    sr.push(a + b);
                 }
+                if (chars.charAt(i) == '-') {
+                    sr.push(b - a);
+                }
+                if (chars.charAt(i) == '*') {
+                    sr.push(a * b);
+                }
+                if (chars.charAt(i) == '/') {
+                    sr.push(b / a);
+                }
+
             }
         }
-
-       /* switch (chars) {
-            case '+':
-                res = count1 + count2;
-                break;
-            case '-':
-                res = count1 - count2;
-                break;
-            case '*':
-                res = count1 * count2;
-                break;
-            case '/':
-                res = count1 / count2;
-                break;
-        }*/
-        return res;
+        return sr.pop();
     }
 }
