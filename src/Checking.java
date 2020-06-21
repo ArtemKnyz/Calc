@@ -44,10 +44,20 @@ public class Checking {
                 return false;
             }
         }
-        if(inputExpression.matches("\\d+(\\.|,)*\\d*")){   //если выражение состоит только из 1 числа
+        if (inputExpression.matches("\\d+(\\.|,)*\\d*")) {   //если выражение состоит только из 1 числа
             System.out.println(inputExpression);
             return false;
         }
+        if (inputExpression.matches(".*\\d+(\\.|\\d)*(\\/)[0].*")) {
+            try {
+                throw new NullPointerException();
+            } catch (NullPointerException exception) {
+                System.err.println("Деление на 0");
+                return false;
+            }
+
+        }
         return true;
     }
+
 }
